@@ -280,8 +280,13 @@ async function callFabricScan(imageDataUrl) {
   const messages = [
     {
       role: 'system',
-      content: `You are a textile analysis assistant for a fashion design app. You will be shown
-a close-up photo of a fabric swatch. Analyze it visually and respond ONLY with
+      content: `You are a careful textile analyst for a fashion design app. You will be shown
+a close-up photo of a fabric swatch. Inspect the image itself before answering.
+Do not default to cotton: cotton is only correct when the visible weave, matte
+surface, fiber texture, and weight support it. First compare cotton, linen,
+silk, denim, polyester, wool, chiffon, velvet, knit, blend, and unknown, then
+choose the best-supported result. If the image does not show enough detail to
+distinguish the material, return unknown with low confidence. Respond ONLY with
 valid JSON matching this exact schema, no extra text:
 
 {
@@ -300,18 +305,19 @@ dominant_color is a simple color name e.g. "maroon"
 texture_notes is max 15 words
 best_for is 1-3 garment types from: ["shirt","kurta","dress","pants","jacket","saree","skirt"]
 
-Base your answer purely on visual cues: weave tightness, sheen, thickness, how
-light falls across folds if visible. If uncertain, lower the confidence score
-rather than guessing wildly.`,
+Use only visible cues: weave or knit structure, sheen, surface texture,
+thickness, edge behavior, and how light falls across folds. Do not infer the
+fabric type from the color alone. Cotton must not be used as a fallback.
+If uncertain, lower confidence rather than guessing.`,
     },
     {
       role: 'user',
       content: [
+        { type: 'text', text: 'Compare the candidate materials carefully and analyze this fabric swatch.' },
         {
           type: 'image_url',
           image_url: { url: imageDataUrl },
         },
-        { type: 'text', text: 'Analyze this fabric swatch.' },
       ],
     },
   ];
@@ -992,14 +998,34 @@ function isNewerVersion(latest, current) {
   return false;
 }
 
-function showUpdateBanner(newVersion, releaseUrl) {
+async function installUpdate(downloadUrl, releaseUrl, button) {
+  const updater = window.Capacitor?.Plugins?.DrapeSenseUpdater;
+  if (!updater) {
+    // Static-browser fallback; native Android uses the in-app installer bridge.
+    window.open(releaseUrl, '_blank', 'noopener');
+    return;
+  }
+  button.disabled = true;
+  button.textContent = 'Downloading…';
+  try {
+    await updater.downloadAndInstall({ url: downloadUrl });
+    button.textContent = 'Opening installer…';
+  } catch (error) {
+    console.error('Update install failed:', error);
+    button.disabled = false;
+    button.textContent = 'Retry update';
+  }
+}
+
+function showUpdateBanner(newVersion, releaseUrl, downloadUrl) {
   if (document.querySelector('.update-banner')) return;
   const banner = document.createElement('div');
   banner.className = 'update-banner';
   banner.innerHTML = `
     <span>A new version (v${escapeHTML(newVersion)}) is available.</span>
-    <a href="${escapeHTML(releaseUrl)}" target="_blank" rel="noopener">Update</a>
+    <button class="update-action" type="button">Update</button>
     <button class="dismiss-btn" type="button" aria-label="Dismiss">×</button>`;
+  banner.querySelector('.update-action').addEventListener('click', event => installUpdate(downloadUrl, releaseUrl, event.currentTarget));
   banner.querySelector('.dismiss-btn').addEventListener('click', () => banner.remove());
   document.body.prepend(banner);
 }
@@ -1011,7 +1037,10 @@ async function checkForUpdate() {
     if (!res.ok) return;
     const data = await res.json();
     const latestVersion = String(data.tag_name || '').replace(/^v/, '');
-    if (latestVersion && isNewerVersion(latestVersion, APP_VERSION)) showUpdateBanner(latestVersion, data.html_url);
+    const apk = (data.assets || []).find(asset => String(asset.name || '').toLowerCase().endsWith('.apk'));
+    if (latestVersion && apk?.browser_download_url && isNewerVersion(latestVersion, APP_VERSION)) {
+      showUpdateBanner(latestVersion, data.html_url, apk.browser_download_url);
+    }
   } catch (_) {
     // Update checks are best-effort and never block the app.
   }

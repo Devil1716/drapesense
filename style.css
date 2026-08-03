@@ -776,7 +776,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", san
 
 .update-banner { position: fixed; z-index: 200; top: calc(72px + env(safe-area-inset-top)); left: 12px; right: 12px; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--text); box-shadow: 0 8px 24px rgba(42,39,36,.16); animation: updateBannerIn 200ms ease-out both; font-size: 12px; }
 .update-banner span { flex: 1; }
-.update-banner a { color: var(--accent); font-weight: 700; text-decoration: none; }
+.update-banner a, .update-action { color: var(--accent); font-weight: 700; text-decoration: none; }
+.update-action { border: 0; background: transparent; font: inherit; cursor: pointer; }
+.update-action:disabled { opacity: .55; cursor: wait; }
 .dismiss-btn { width: 28px; height: 28px; border: 0; border-radius: 50%; background: var(--surface-2); color: var(--text-muted); font-size: 20px; line-height: 1; cursor: pointer; }
 @keyframes updateBannerIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }

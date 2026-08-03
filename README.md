@@ -113,5 +113,8 @@ GitHub Release. Before creating a release, add the repository secret
 `GROQ_API_KEY`; the workflow creates the ignored `config.js` only during the build.
 
 The app checks `Devil1716/drapesense` once at startup and shows a dismissible banner
-when a newer release is available. It opens the release page for manual APK download
-and installation; it does not auto-install updates.
+when a newer release is available. In the Android APK, tapping Update downloads the
+APK inside DrapeSense and opens Android's installer directly. Android still requires
+the user to confirm the installation; silent self-installation is blocked by Android
+unless the app is distributed through Play Store or managed-device tooling. Browser
+use keeps a safe fallback that opens the release page.
