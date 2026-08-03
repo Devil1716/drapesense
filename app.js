@@ -71,10 +71,17 @@ const state = {
 const $ = id => document.getElementById(id);
 
 const WIZARD_LABELS = { 1: 'Scan', 2: 'Match', 3: 'Yardage', 4: 'Cutting diagram' };
+let wizardStep = 1;
 
-function setWizardStep(step) {
+function setWizardStep(step, { pushHistory = true } = {}) {
   const normalized = Math.max(1, Math.min(4, Number(step) || 1));
+  const changed = normalized !== wizardStep;
+  wizardStep = normalized;
+  if (pushHistory && changed && window.history && window.history.pushState) {
+    window.history.pushState({ drapeStep: normalized }, '', `#step-${normalized}`);
+  }
   document.body.dataset.step = String(normalized);
+  updateScanActionVisibility(normalized === 1 && !state.photoDataUrl && !state.isAnalyzing);
   document.querySelectorAll('.wizard-section').forEach(section => hide(section));
   if (normalized === 2) {
     show($('result-section')); show($('silhouette-section'));
@@ -85,6 +92,10 @@ function setWizardStep(step) {
     if (state.fitAdvice) show($('preview-section'));
   }
   if (normalized === 4) show($('diagram-section'));
+  if (normalized === 1) {
+    show($('scan-section'));
+    hide($('photo-review'));
+  }
   document.querySelectorAll('[data-step-dot]').forEach(dot => {
     const dotStep = Number(dot.dataset.stepDot);
     dot.classList.toggle('is-active', dotStep === normalized);
@@ -97,19 +108,23 @@ function setWizardStep(step) {
 }
 
 function setupWizardUI() {
-  setWizardStep(1);
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState({ drapeStep: 1 }, '', '#step-1');
+  }
+  setWizardStep(1, { pushHistory: false });
   $('start-over-btn')?.addEventListener('click', resetWizardState);
   $('back-btn')?.addEventListener('click', () => {
     const current = Number(document.body.dataset.step || 1);
-    if (current === 2) {
-      hide($('result-section')); hide($('silhouette-section')); hide($('preview-section'));
-      show($('scan-section')); setWizardStep(1);
-    } else if (current === 3) {
-      hide($('yardage-section')); setWizardStep(2);
-    } else if (current === 4) {
-      hide($('diagram-section')); setWizardStep(3);
+    if (current > 1 && window.history.state?.drapeStep === current) {
+      window.history.back();
+    } else if (current > 1) {
+      setWizardStep(current - 1, { pushHistory: false });
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  window.addEventListener('popstate', event => {
+    const requestedStep = event.state?.drapeStep;
+    if (requestedStep) setWizardStep(requestedStep, { pushHistory: false });
   });
 }
 
@@ -125,8 +140,10 @@ function resetWizardState() {
   document.querySelectorAll('.silhouette-btn').forEach(btn => btn.classList.remove('selected'));
   if ($('file-input')) $('file-input').value = '';
   show($('scan-section'));
+  updateScanActionVisibility(true);
   clearError($('scan-error-slot'));
-  setWizardStep(1);
+  setWizardStep(1, { pushHistory: false });
+  if (window.history?.replaceState) window.history.replaceState({ drapeStep: 1 }, '', '#step-1');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -212,6 +229,9 @@ async function groqFetch(messages, { vision = false } = {}) {
     });
   } catch (error) {
     if (error.name === 'AbortError') throw new Error('Groq request timed out.');
+    if (error instanceof TypeError) {
+      throw new Error('Unable to reach the analysis service. Check your internet connection and try again.');
+    }
     throw error;
   } finally {
     clearTimeout(timeout);
@@ -418,6 +438,10 @@ for an individual body. Be practical and use commonly accepted industry values.`
 
 function show(el) { if (el) el.classList.remove('hidden'); }
 function hide(el) { if (el) el.classList.add('hidden'); }
+function updateScanActionVisibility(visible) {
+  const scanAction = $('scan-btn-wrapper');
+  if (scanAction) scanAction.classList.toggle('hidden', !visible);
+}
 function escapeHTML(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -501,6 +525,7 @@ function setupScanScreen() {
     const resized = state.photoDataUrl;
     if (!resized || state.isAnalyzing) return;
     state.isAnalyzing = true;
+    updateScanActionVisibility(false);
     const analyzeButton = $('use-photo-btn');
     if (analyzeButton) analyzeButton.disabled = true;
     hide($('photo-review'));
@@ -529,6 +554,7 @@ function setupScanScreen() {
   async function handleFile(file) {
     if (!file || !file.type.startsWith('image/')) return;
     hide(scanSection);
+    updateScanActionVisibility(false);
     hide(resultSection);
     hide($('silhouette-section'));
     hide($('preview-section'));
@@ -566,6 +592,8 @@ function setupScanScreen() {
   $('retake-btn')?.addEventListener('click', () => {
     hide($('photo-review'));
     show(scanSection);
+    state.photoDataUrl = null;
+    updateScanActionVisibility(true);
     fileInput.click();
   });
   $('use-photo-btn')?.addEventListener('click', analyzePhoto);
