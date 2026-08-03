@@ -934,7 +934,7 @@ function renderError(slot, retryFn, message = 'Something went wrong. Please try 
   slot.classList.remove('hidden');
   slot.innerHTML = `
     <div class="error-card">
-   <p>\${escapeHTML(message)}</p>
+   <p>${escapeHTML(message)}</p>
    <button class="btn btn-outline" id="retry-${Date.now()}" style="width:auto;padding:10px 20px">
         Retry
       </button>
