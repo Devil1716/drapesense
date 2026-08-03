@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 560" width="400" height="560"
+     font-family="Inter, Arial, sans-serif" font-size="11" fill="none" stroke="#1a1a1a">
+
+  <!-- Title -->
+  <text x="200" y="22" text-anchor="middle" font-size="13" font-weight="600"
+        fill="#1a1a1a" stroke="none">PANTS — FRONT PANEL</text>
+  <text x="200" y="38" text-anchor="middle" font-size="10" fill="#666" stroke="none">
+    Standard size reference only
+  </text>
+
+  <!-- Grainline arrow (center of leg) -->
+  <line x1="200" y1="90" x2="200" y2="510" stroke="#1a1a1a" stroke-width="1"
+        stroke-dasharray="4 2"/>
+  <polygon points="200,82 195,94 205,94" fill="#1a1a1a" stroke="none"/>
+  <polygon points="200,518 195,506 205,506" fill="#1a1a1a" stroke="none"/>
+  <text x="207" y="305" font-size="9" fill="#888" stroke="none">GRAIN</text>
+
+  <!-- Pants outline (front): waistband, rise, crotch curve, two legs -->
+  <!-- Waistband -->
+  <rect x="105" y="55" width="190" height="25" stroke="#1a1a1a" stroke-width="2" rx="2"/>
+  <!-- Rise + crotch -->
+  <path d="
+    M 105,80
+    L 100,200
+    Q 100,240 140,250
+    Q 160,255 175,260
+    L 175,520
+    L 225,520
+    L 225,260
+    Q 240,255 260,250
+    Q 300,240 300,200
+    L 295,80
+  " stroke="#1a1a1a" stroke-width="2"/>
+
+  <!-- Crotch curve detail -->
+  <path d="M 140,250 Q 200,270 260,250" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- Dashed cutting lines -->
+  <rect x="99" y="49" width="202" height="27" stroke="#999" stroke-width="1"
+        stroke-dasharray="5 3" rx="2"/>
+  <path d="
+    M 99,76
+    L 94,200
+    Q 94,244 136,254
+    Q 156,259 169,264
+    L 169,524
+    L 231,524
+    L 231,264
+    Q 244,259 264,254
+    Q 306,244 306,200
+    L 301,76
+  " stroke="#999" stroke-width="1" stroke-dasharray="5 3"/>
+
+  <!-- Waist label anchor -->
+  <circle cx="200" cy="67" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-waist" x="200" y="63" text-anchor="middle" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">— waist —</text>
+
+  <!-- Hip label anchor -->
+  <line x1="100" y1="175" x2="300" y2="175" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="310" cy="175" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-hip" x="315" y="179" text-anchor="start" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">hip</text>
+
+  <!-- Inseam label anchor (vertical, inner leg) -->
+  <line x1="52" y1="260" x2="52" y2="520" stroke="#bbb" stroke-width="0.8"/>
+  <polygon points="52,262 49,272 55,272" fill="#1a1a1a" stroke="none"/>
+  <polygon points="52,518 49,508 55,508" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-inseam" x="48" y="394" text-anchor="end" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">inseam</text>
+
+  <!-- Leg opening label anchor -->
+  <line x1="169" y1="520" x2="231" y2="520" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="200" cy="530" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-leg_opening" x="200" y="543" text-anchor="middle" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">leg opening</text>
+
+  <!-- Waistband detail lines -->
+  <line x1="105" y1="68" x2="295" y2="68" stroke="#ccc" stroke-width="0.8" stroke-dasharray="3 2"/>
+  <text x="350" y="68" text-anchor="start" font-size="9" fill="#888" stroke="none">waistband</text>
+
+  <!-- Front fly/pleat hint -->
+  <line x1="200" y1="80" x2="200" y2="200" stroke="#ccc" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="207" y="150" font-size="8" fill="#aaa" stroke="none">fly</text>
+
+</svg>

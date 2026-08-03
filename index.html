@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f4f1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <title>DrapeSense — Fabric Scanner</title>
+  <meta name="description" content="Scan a fabric swatch with your phone camera and instantly identify fabric type, drape, garment fit, yardage estimate, and cutting diagram.">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell" id="app-shell">
+
+  <!-- ─────────────────────────────────────────────────────────
+       App Header
+  ──────────────────────────────────────────────────────────── -->
+  <header class="app-header">
+    <button class="back-btn hidden" id="back-btn" type="button" aria-label="Go back">
+      <span aria-hidden="true">‹</span>
+    </button>
+    <div class="app-logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <!-- Fabric/scissor icon -->
+        <path d="M9.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm5 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM4 6h16l-1 14H5L4 6zm3 3v2h2V9H7zm4 0v2h2V9h-2zm4 0v2h2V9h-2z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="app-title">DrapeSense</div>
+      <div class="app-subtitle">Fabric Scanner for Designers</div>
+    </div>
+    <button class="start-over-link" id="start-over-btn" type="button">Start over</button>
+  </header>
+
+  <nav class="step-indicator" aria-label="Progress">
+    <span class="step-dot is-active" data-step-dot="1"></span>
+    <span class="step-line"></span>
+    <span class="step-dot" data-step-dot="2"></span>
+    <span class="step-line"></span>
+    <span class="step-dot" data-step-dot="3"></span>
+    <span class="step-line"></span>
+    <span class="step-dot" data-step-dot="4"></span>
+    <span class="step-caption" id="step-caption">Scan</span>
+  </nav>
+
+
+  <!-- ─────────────────────────────────────────────────────────
+       Screen 1 — Scan
+  ──────────────────────────────────────────────────────────── -->
+
+  <!-- Scan button -->
+  <section class="scan-area" id="scan-section">
+    <div class="scan-btn-wrapper" id="scan-btn-wrapper">
+      <input
+        type="file"
+        accept="image/*"
+        capture="environment"
+        id="file-input"
+        aria-label="Take or upload a photo of a fabric swatch"
+      >
+      <div class="scan-btn">
+        <div class="btn-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/>
+            <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+          </svg>
+        </div>
+        Scan Fabric Swatch
+      </div>
+    </div>
+    <p class="scan-hint">
+      Point your camera at a fabric sample in good light.<br>
+      Works best with a flat, well-lit swatch.
+    </p>
+    <!-- scan error slot -->
+    <div id="scan-error-slot" class="hidden" style="width:100%"></div>
+  </section>
+
+  <section class="photo-review hidden" id="photo-review" aria-live="polite">
+    <p class="section-label">Review your photo</p>
+    <div class="photo-review-frame">
+      <img id="photo-review-image" alt="Fabric photo ready to analyze">
+      <div class="frame-guide" aria-hidden="true"><span>Fill this frame with the fabric</span></div>
+    </div>
+    <div class="photo-review-actions">
+      <button class="btn btn-secondary" id="retake-btn" type="button">Retake</button>
+      <button class="btn btn-primary" id="use-photo-btn" type="button">Use this photo</button>
+    </div>
+  </section>
+
+  <!-- Loading state (shown while Call 1 runs) -->
+  <section class="section hidden" id="loading-card">
+    <div class="loading-card">
+      <div class="spinner" role="status" aria-label="Analyzing fabric"></div>
+      <div class="loading-label">Analyzing fabric…</div>
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────
+       Screen 1 Result — Fabric info card
+  ──────────────────────────────────────────────────────────── -->
+  <section class="section hidden wizard-section" data-wizard-step="2" id="result-section">
+    <p class="section-label">Fabric Analysis</p>
+    <div class="card" id="result-card">
+      <!-- Populated by renderResultCard() -->
+    </div>
+
+    <!-- Re-scan button -->
+    <button class="btn btn-secondary mt-14"
+            id="retry-btn-scan"
+            aria-label="Scan a different fabric">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M17.65 6.35A7.96 7.96 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+      </svg>
+      Scan a Different Fabric
+    </button>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────
+       Screen 2 — Silhouette selector
+  ──────────────────────────────────────────────────────────── -->
+  <section class="section hidden wizard-section" data-wizard-step="2" id="silhouette-section">
+    <p class="section-label">Pick a Garment Shape</p>
+    <div class="silhouette-grid" id="silhouette-grid" role="group" aria-label="Garment silhouette selector">
+      <!-- Buttons injected by setupSilhouetteScreen() -->
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────
+       Screen 2 — Garment preview + fit advice
+  ──────────────────────────────────────────────────────────── -->
+  <section class="section hidden wizard-section" data-wizard-step="2" id="preview-section">
+    <p class="section-label">Fabric on Garment</p>
+
+    <!-- Fabric-filled garment preview (SVG clip-path) -->
+    <div class="preview-svg-container" id="garment-preview-wrap">
+      <!-- Built by renderGarmentPreview() -->
+    </div>
+
+    <!-- Fit advice loading -->
+    <div class="loading-card hidden" id="advice-loading" style="margin-bottom:12px">
+      <div class="spinner" role="status" aria-label="Getting fit advice"></div>
+      <div class="loading-label">Evaluating fit…</div>
+    </div>
+
+    <!-- Fit advice card -->
+    <div class="card hidden" id="fit-advice-card">
+      <!-- Populated by renderFitAdvice() -->
+    </div>
+
+    <!-- Fit advice error slot -->
+    <div id="advice-error-slot" class="hidden"></div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────
+       Screen 3 — Fabric yardage estimate
+  ──────────────────────────────────────────────────────────── -->
+  <section class="section hidden wizard-section" data-wizard-step="3" id="yardage-section">
+    <p class="section-label">How Much Fabric to Buy</p>
+
+    <div class="card">
+      <form class="yardage-form" id="yardage-form" onsubmit="return false">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="size-select">Size</label>
+            <select id="size-select" name="size" aria-label="Garment size">
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M" selected>M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="width-select">Fabric Width</label>
+            <select id="width-select" name="width" aria-label="Fabric bolt width">
+              <option value='36"'>36"</option>
+              <option value='44"' selected>44"</option>
+              <option value='58"'>58"</option>
+            </select>
+            <div class="width-pills" role="group" aria-label="Fabric bolt width">
+              <button type="button" class="width-pill" data-width='36"'>36"</button>
+              <button type="button" class="width-pill is-selected" data-width='44"'>44"</button>
+              <button type="button" class="width-pill" data-width='58"'>58"</button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="estimate-btn">
+          Estimate Fabric Needed
+        </button>
+      </form>
+    </div>
+
+    <!-- Yardage loading -->
+    <div class="loading-card hidden mt-14" id="yardage-loading">
+      <div class="spinner" role="status" aria-label="Estimating yardage"></div>
+      <div class="loading-label">Calculating…</div>
+    </div>
+
+    <!-- Yardage result -->
+    <div class="card hidden mt-14" id="yardage-result-card">
+      <!-- Populated by renderYardageResult() -->
+    </div>
+
+    <!-- Yardage error slot -->
+    <div id="yardage-error-slot" class="hidden"></div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────
+       Screen 4 — Cutting diagram
+  ──────────────────────────────────────────────────────────── -->
+  <section class="section hidden wizard-section" data-wizard-step="4" id="diagram-section">
+    <p class="section-label">Cutting Diagram</p>
+    <p class="disclaimer" style="margin-bottom:14px">
+      Standard size reference measurements — not a custom‑fit pattern.<br>
+      Use these as a working guide when cutting, not as body measurements.
+    </p>
+
+    <button class="btn btn-outline" id="show-diagram-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+      </svg>
+      Show Cutting Diagram
+    </button>
+
+    <!-- Diagram loading -->
+    <div class="loading-card hidden mt-14" id="diagram-loading">
+      <div class="spinner" role="status" aria-label="Loading cutting diagram"></div>
+      <div class="loading-label">Loading diagram…</div>
+    </div>
+
+    <!-- Diagram error slot -->
+    <div id="diagram-error-slot" class="hidden"></div>
+
+    <!-- Diagram content -->
+    <div class="hidden mt-14" id="diagram-content">
+      <div class="pattern-diagram-wrap">
+        <!-- SVG injected by renderDiagram() -->
+        <div id="pattern-svg-container"></div>
+        <div class="pattern-meta" id="diagram-meta">
+          <!-- seam allowance + note injected here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /app-shell -->
+
+<div class="bottom-action-bar" id="bottom-action-bar" aria-live="polite">
+  <div class="bottom-action-inner" id="bottom-action-inner"></div>
+</div>
+
+<!-- Load config (must define GROQ_API_KEY) BEFORE app.js -->
+<script src="config.js"></script>
+<script src="version.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

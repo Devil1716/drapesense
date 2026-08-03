@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 560" width="400" height="560"
+     font-family="Inter, Arial, sans-serif" font-size="11" fill="none" stroke="#1a1a1a">
+
+  <!-- Title -->
+  <text x="200" y="22" text-anchor="middle" font-size="13" font-weight="600"
+        fill="#1a1a1a" stroke="none">KURTA — FRONT PANEL</text>
+  <text x="200" y="38" text-anchor="middle" font-size="10" fill="#666" stroke="none">
+    Standard size reference only
+  </text>
+
+  <!-- Grainline arrow -->
+  <line x1="200" y1="85" x2="200" y2="490" stroke="#1a1a1a" stroke-width="1"
+        stroke-dasharray="4 2"/>
+  <polygon points="200,77 195,89 205,89" fill="#1a1a1a" stroke="none"/>
+  <polygon points="200,498 195,486 205,486" fill="#1a1a1a" stroke="none"/>
+  <text x="207" y="292" font-size="9" fill="#888" stroke="none">GRAIN</text>
+
+  <!-- Kurta panel outline (longer, side slits at hem) -->
+  <path d="
+    M 100,65
+    L 70,110
+    L 70,120
+    L 100,130
+    L 95,490
+    L 120,490
+    L 120,470
+    L 200,470
+    L 280,470
+    L 280,490
+    L 305,490
+    L 300,130
+    L 330,120
+    L 330,110
+    L 300,65
+    Q 270,55 250,55
+    Q 235,55 225,60
+    Q 215,50 200,50
+    Q 185,50 175,60
+    Q 165,55 150,55
+    Q 125,55 100,65
+    Z
+  " stroke="#1a1a1a" stroke-width="2"/>
+
+  <!-- Dashed cutting lines -->
+  <path d="
+    M 108,68
+    L 78,112
+    L 78,118
+    L 108,128
+    L 103,483
+    L 120,483
+    L 120,463
+    L 200,463
+    L 280,463
+    L 280,483
+    L 297,483
+    L 292,128
+    L 322,118
+    L 322,112
+    L 292,68
+    Q 268,58 250,58
+    Q 235,58 225,63
+    Q 215,53 200,53
+    Q 185,53 175,63
+    Q 165,58 150,58
+    Q 128,58 108,68
+    Z
+  " stroke="#999" stroke-width="1" stroke-dasharray="5 3"/>
+
+  <!-- Shoulder label anchor -->
+  <circle cx="200" cy="65" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-shoulder" x="200" y="62" text-anchor="middle" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">— shoulder —</text>
+
+  <!-- Chest label anchor -->
+  <line x1="95" y1="190" x2="305" y2="190" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="315" cy="190" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-chest" x="320" y="194" text-anchor="start" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">chest</text>
+
+  <!-- Sleeve length anchor -->
+  <circle cx="50" cy="120" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-sleeve_length" x="48" y="118" text-anchor="end" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">sleeve</text>
+
+  <!-- Body length dimension line -->
+  <line x1="52" y1="65" x2="52" y2="490" stroke="#bbb" stroke-width="0.8"/>
+  <polygon points="52,67 49,77 55,77" fill="#1a1a1a" stroke="none"/>
+  <polygon points="52,488 49,478 55,478" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-body_length" x="48" y="282" text-anchor="end" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">body</text>
+
+  <!-- Side slits label -->
+  <line x1="120" y1="470" x2="120" y2="490" stroke="#aaa" stroke-width="1" stroke-dasharray="3 2"/>
+  <line x1="280" y1="470" x2="280" y2="490" stroke="#aaa" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="200" y="507" text-anchor="middle" font-size="9" fill="#888" stroke="none">side slits</text>
+
+  <!-- Collar notch (band collar kurta) -->
+  <path d="M 182,50 L 182,60 Q 200,65 218,60 L 218,50" stroke="#1a1a1a" stroke-width="1.5"/>
+
+</svg>

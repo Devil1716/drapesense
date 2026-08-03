@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 580" width="400" height="580"
+     font-family="Inter, Arial, sans-serif" font-size="11" fill="none" stroke="#1a1a1a">
+
+  <!-- Title -->
+  <text x="200" y="22" text-anchor="middle" font-size="13" font-weight="600"
+        fill="#1a1a1a" stroke="none">DRESS — FRONT PANEL</text>
+  <text x="200" y="38" text-anchor="middle" font-size="10" fill="#666" stroke="none">
+    Standard size reference only
+  </text>
+
+  <!-- Grainline arrow -->
+  <line x1="200" y1="78" x2="200" y2="515" stroke="#1a1a1a" stroke-width="1"
+        stroke-dasharray="4 2"/>
+  <polygon points="200,70 195,82 205,82" fill="#1a1a1a" stroke="none"/>
+  <polygon points="200,523 195,511 205,511" fill="#1a1a1a" stroke="none"/>
+  <text x="207" y="300" font-size="9" fill="#888" stroke="none">GRAIN</text>
+
+  <!-- Dress outline (fitted bodice, A-line skirt) -->
+  <path d="
+    M 130,55
+    Q 200,45 270,55
+    L 290,80
+    L 290,90
+    L 280,95
+    L 285,200
+    Q 285,220 270,225
+    Q 310,280 320,520
+    L 80,520
+    Q 90,280 130,225
+    Q 115,220 115,200
+    L 120,95
+    L 110,90
+    L 110,80
+    Z
+  " stroke="#1a1a1a" stroke-width="2"/>
+
+  <!-- Dashed cutting lines -->
+  <path d="
+    M 130,49
+    Q 200,39 270,49
+    L 291,74
+    L 291,84
+    L 282,89
+    L 287,200
+    Q 287,223 272,228
+    Q 313,284 323,524
+    L 77,524
+    Q 87,284 128,228
+    Q 113,223 113,200
+    L 118,89
+    L 109,84
+    L 109,74
+    Z
+  " stroke="#999" stroke-width="1" stroke-dasharray="5 3"/>
+
+  <!-- Bust label anchor -->
+  <line x1="115" y1="160" x2="285" y2="160" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="295" cy="160" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-bust" x="300" y="164" text-anchor="start" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">bust</text>
+
+  <!-- Waist label anchor -->
+  <line x1="115" y1="220" x2="285" y2="220" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="295" cy="220" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-waist" x="300" y="224" text-anchor="start" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">waist</text>
+
+  <!-- Hip label anchor -->
+  <line x1="105" y1="310" x2="295" y2="310" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="305" cy="310" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-hip" x="310" y="314" text-anchor="start" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">hip</text>
+
+  <!-- Full length dimension line -->
+  <line x1="52" y1="55" x2="52" y2="520" stroke="#bbb" stroke-width="0.8"/>
+  <polygon points="52,57 49,67 55,67" fill="#1a1a1a" stroke="none"/>
+  <polygon points="52,518 49,508 55,508" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-full_length" x="48" y="292" text-anchor="end" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">length</text>
+
+  <!-- Shoulder strap -->
+  <text x="200" y="52" text-anchor="middle" font-size="9" fill="#888" stroke="none">shoulder</text>
+
+  <!-- Neckline arc -->
+  <path d="M 158,55 Q 200,68 242,55" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- Armhole curves -->
+  <path d="M 130,55 Q 115,65 110,80" stroke="#1a1a1a" stroke-width="1.2"/>
+  <path d="M 270,55 Q 285,65 290,80" stroke="#1a1a1a" stroke-width="1.2"/>
+
+</svg>

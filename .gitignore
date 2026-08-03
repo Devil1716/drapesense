@@ -1,0 +1,18 @@
+# DrapeSense — gitignore
+
+# Your API key — never commit this
+config.js
+
+# Editor artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Node (if using npx serve)
+node_modules/
+
+# Capacitor staging directory (generated from the root web files)
+www/

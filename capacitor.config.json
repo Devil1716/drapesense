@@ -1,0 +1,6 @@
+{
+  "appId": "com.drapesense.app",
+  "appName": "DrapeSense",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

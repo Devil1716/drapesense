@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520"
+     font-family="Inter, Arial, sans-serif" font-size="11" fill="none" stroke="#1a1a1a">
+
+  <!-- Title -->
+  <text x="200" y="22" text-anchor="middle" font-size="13" font-weight="600"
+        fill="#1a1a1a" stroke="none">SHIRT — FRONT PANEL</text>
+  <text x="200" y="38" text-anchor="middle" font-size="10" fill="#666" stroke="none">
+    Standard size reference only
+  </text>
+
+  <!-- Grainline arrow -->
+  <line x1="200" y1="80" x2="200" y2="440" stroke="#1a1a1a" stroke-width="1"
+        stroke-dasharray="4 2"/>
+  <polygon points="200,72 195,84 205,84" fill="#1a1a1a" stroke="none"/>
+  <polygon points="200,448 195,436 205,436" fill="#1a1a1a" stroke="none"/>
+  <text x="207" y="265" font-size="9" fill="#888" stroke="none">GRAIN</text>
+
+  <!-- Front panel outline -->
+  <path d="
+    M 90,60
+    L 60,100
+    L 60,110
+    L 90,120
+    L 90,440
+    L 310,440
+    L 310,120
+    L 340,110
+    L 340,100
+    L 310,60
+    Q 280,50 250,50
+    Q 235,50 225,55
+    Q 215,45 200,45
+    Q 185,45 175,55
+    Q 165,50 150,50
+    Q 120,50 90,60
+    Z
+  " stroke="#1a1a1a" stroke-width="2"/>
+
+  <!-- Dashed cutting lines (seam allowance) -->
+  <path d="
+    M 98,63
+    L 68,102
+    L 68,108
+    L 98,118
+    L 98,432
+    L 302,432
+    L 302,118
+    L 332,108
+    L 332,102
+    L 302,63
+    Q 270,53 250,53
+    Q 235,53 225,58
+    Q 215,48 200,48
+    Q 185,48 175,58
+    Q 165,53 150,53
+    Q 130,53 98,63
+    Z
+  " stroke="#999" stroke-width="1" stroke-dasharray="5 3"/>
+
+  <!-- Shoulder label anchor -->
+  <line x1="90" y1="60" x2="310" y2="60" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="200" cy="60" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-shoulder" x="200" y="56" text-anchor="middle" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">— shoulder —</text>
+
+  <!-- Chest label anchor -->
+  <line x1="90" y1="180" x2="310" y2="180" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="320" cy="180" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-chest" x="348" y="184" text-anchor="start" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">chest</text>
+
+  <!-- Sleeve length label anchor -->
+  <line x1="60" y1="110" x2="90" y2="110" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="50" cy="110" r="2" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-sleeve_length" x="48" y="108" text-anchor="end" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">sleeve</text>
+
+  <!-- Body length label anchor (hem to shoulder) -->
+  <line x1="60" y1="440" x2="90" y2="440" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2 2"/>
+  <circle cx="50" cy="250" r="2" fill="#1a1a1a" stroke="none"/>
+  <!-- vertical dimension line -->
+  <line x1="52" y1="60" x2="52" y2="440" stroke="#bbb" stroke-width="0.8"/>
+  <polygon points="52,62 49,72 55,72" fill="#1a1a1a" stroke="none"/>
+  <polygon points="52,438 49,428 55,428" fill="#1a1a1a" stroke="none"/>
+  <text id="anchor-body_length" x="48" y="254" text-anchor="end" font-size="10"
+        fill="#2563eb" stroke="none" font-weight="500">body</text>
+
+  <!-- Collar notch -->
+  <path d="M 185,45 Q 200,55 215,45" stroke="#1a1a1a" stroke-width="1.5"/>
+
+</svg>

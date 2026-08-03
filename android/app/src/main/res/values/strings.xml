@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DrapeSense</string>
+    <string name="title_activity_main">DrapeSense</string>
+    <string name="package_name">com.drapesense.app</string>
+    <string name="custom_url_scheme">com.drapesense.app</string>
+</resources>
