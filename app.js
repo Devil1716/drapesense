@@ -926,7 +926,10 @@ async function renderDiagram(garment, measureData) {
   // Inject measurements into anchor text elements
   const anchors = ANCHOR_MAP[garment] || [];
   const measurements = measureData.measurements || {};
-  const unit = measureData.unit || '';
+ const unit = measureData.unit || '';
+  const viewBox = (svgEl.getAttribute('viewBox') || '0 0 400 560').split(/\s+/).map(Number);
+  const viewLeft = viewBox[0] || 0;
+  const viewRight = viewLeft + (viewBox[2] || 400);
 
   anchors.forEach(key => {
     const el = svgEl.querySelector(`#anchor-${key}`);
@@ -935,14 +938,30 @@ async function renderDiagram(garment, measureData) {
     if (val === undefined || val === null) return;
     // Append the value to the label text
     const currentText = el.textContent.replace(/—[^—]*—/g, '').replace(/^—\s*|\s*—$/g, '').trim();
-    const labelBase = currentText || key.replace(/_/g, ' ');
-    el.textContent = `${labelBase}: ${val} ${unit}`;
+    const rawLabel = currentText || key.replace(/_/g, ' ');
+    const labelBase = key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+    const labelText = `${labelBase}: ${val}${unit ? ` ${unit}` : ''}`;
+    const labelWidth = Math.max(78, labelText.length * 5.8 + 16);
+    const anchorX = Number(el.getAttribute('x') || 0);
+    const anchorY = Number(el.getAttribute('y') || 0);
+    const anchor = el.getAttribute('text-anchor') || 'start';
+    let chipX = anchor === 'end' ? anchorX - labelWidth - 8
+      : anchor === 'middle' ? anchorX - labelWidth / 2
+      : anchorX + 8;
+    chipX = Math.max(viewLeft + 4, Math.min(chipX, viewRight - labelWidth - 4));
+    const textX = chipX + 8;
+    const textY = anchorY + 4;
+    el.setAttribute('x', textX);
+    el.setAttribute('y', textY);
+    el.setAttribute('text-anchor', 'start');
+    el.setAttribute('font-size', '9');
+    el.textContent = labelText;
     const ns = 'http://www.w3.org/2000/svg';
     const chip = document.createElementNS(ns, 'rect');
     chip.setAttribute('data-measure-chip', key);
-    chip.setAttribute('x', Number(el.getAttribute('x') || 0) - 8);
-    chip.setAttribute('y', Number(el.getAttribute('y') || 0) - 13);
-    chip.setAttribute('width', Math.max(76, el.textContent.length * 6.2 + 16));
+    chip.setAttribute('x', chipX);
+    chip.setAttribute('y', textY - 12);
+    chip.setAttribute('width', labelWidth);
     chip.setAttribute('height', '20');
     chip.setAttribute('rx', '10');
     chip.setAttribute('fill', '#FAF8F5');
@@ -959,6 +978,13 @@ async function renderDiagram(garment, measureData) {
       <span class="pattern-meta-item">💬 ${measureData.note || ''}</span>
       <span class="pattern-meta-item">Standard size reference only</span>
     `;
+  }
+  const summaryEl = $('measurement-summary');
+  if (summaryEl) {
+    summaryEl.innerHTML = anchors
+      .filter(key => measureData.measurements?.[key] !== undefined && measureData.measurements?.[key] !== null)
+      .map(key => `<div class="measurement-summary-item"><span>${escapeHTML(key.replace(/_/g, ' '))}</span><strong>${escapeHTML(measureData.measurements[key])} ${escapeHTML(unit)}</strong></div>`)
+      .join('');
   }
 }
 

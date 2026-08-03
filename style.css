@@ -819,8 +819,12 @@ body { background: var(--bg); color: var(--text); }
 .pattern-diagram-wrap svg [stroke="#999"] { stroke: var(--accent); }
 .pattern-diagram-wrap svg [stroke="#1a1a1a"] { stroke: #8D8279; }
 .pattern-diagram-wrap svg text[id^="anchor-"] { fill: var(--accent); font-weight: 700; }
-.pattern-diagram-wrap svg text[id^="anchor-"] { paint-order: stroke; stroke: #FAF8F5; stroke-width: 6px; stroke-linejoin: round; }
+.pattern-diagram-wrap svg text[id^="anchor-"] { paint-order: normal; stroke: none; }
 .pattern-diagram-wrap svg rect[data-measure-chip] { fill: #FAF8F5; stroke: #D8CFC7; }
+.measurement-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 12px; border-top: 1px solid var(--border); background: var(--surface); }
+.measurement-summary-item { min-width: 0; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); }
+.measurement-summary-item span { display: block; margin-bottom: 4px; color: var(--text-muted); font-size: 11px; text-transform: capitalize; }
+.measurement-summary-item strong { display: block; color: var(--text); font-size: 15px; line-height: 1.2; overflow-wrap: anywhere; }
 .loading-card::before { background: linear-gradient(90deg, var(--surface-2) 20%, #fff 45%, var(--surface-2) 70%); background-size: 220% 100%; animation: skeletonShimmer 1.4s linear infinite; box-shadow: 0 28px 0 var(--surface-2), 0 56px 0 var(--surface-2); }
 @keyframes resultReveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes skeletonShimmer { to { background-position: -220% 0; } }
@@ -828,6 +832,6 @@ body { background: var(--bg); color: var(--text); }
   :root { --bg: #1C1B19; --surface: #272522; --surface-2: #34302C; --border: #49433D; --text: #F2EFEA; --text-muted: #B9B1AA; --text-subtle: #948B83; --accent-light: #4A2A20; --accent: #D47758; --accent-dark: #F0A58A; }
   .app-header { background: rgba(28,27,25,.94); }
   .pattern-diagram-wrap { background: #f8f6f2; }
-  .pattern-diagram-wrap svg text[id^="anchor-"] { stroke: #f8f6f2; }
+  .pattern-diagram-wrap svg text[id^="anchor-"] { stroke: none; }
   .pattern-diagram-wrap svg rect[data-measure-chip] { fill: #f8f6f2; stroke: #c8beb5; }
 }
